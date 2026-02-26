@@ -42,10 +42,5 @@ It leverages **[technologies/frameworks/languages]** to provide a **fast, reliab
 - **Software:** [Python 3.x, Node.js 18+, etc.]  
 - **Optional:** [Database, API keys, dependencies]  
 
-### **Steps**
-1. Clone the repository:  
-```bash
 
-1. Clone the repository:  
-```bash
-git clone https://github.com/yourusername/project-name.git
+
