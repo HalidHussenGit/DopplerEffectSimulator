@@ -40,7 +40,20 @@ It leverages **[technologies/frameworks/languages]** to provide a **fast, reliab
 
 ### **Prerequisites**
 - **Software:** [Python 3.x, Node.js 18+, etc.]  
-- **Optional:** [Database, API keys, dependencies]  
+- **Optional:** [Database, API keys, dependencies]
+- ## Screenshots
+
+### Home Page
+![Home Page](home.png)
+
+### Light Doppler Effect Page
+![Light Doppler](light.png)
+
+### Sound Doppler Effect Page
+![Sound Doppler](sound.png)
+
+### About Page
+![About Page](about.png)
 
 
 
