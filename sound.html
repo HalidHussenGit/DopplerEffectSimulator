@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Doppler Effect - Sound Simulator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #ffb36b 0%, #ff8c2f 100%);
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #ff7a00;
+      margin-bottom: 10px;
+      font-size: 2em;
+    }
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 25px;
+      font-size: 0.95em;
+    }
+    canvas {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #ffd2a6;
+      border-radius: 8px;
+      background: #fff7f0;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
+    }
+    .control-group {
+      background: #fff4e7;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ffcf9c;
+    }
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #444;
+      font-size: 0.9em;
+    }
+    .control-group input[type="range"] {
+      width: 100%;
+      margin: 8px 0;
+    }
+    .control-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ffb36b;
+      border-radius: 6px;
+      font-size: 0.95em;
+      background: white;
+    }
+    .value-display {
+      display: inline-block;
+      background: #ff7a00;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9em;
+      min-width: 60px;
+      text-align: center;
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 28px;
+      font-size: 1em;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    #startSim {
+      background: linear-gradient(135deg, #ff7a00 0%, #ff5500 100%);
+      color: white;
+    }
+    #stopSim {
+      background: linear-gradient(135deg, #ffa766 0%, #ff6e42 100%);
+      color: white;
+    }
+    #resetSim {
+      background: linear-gradient(135deg, #ffc176 0%, #ff9b47 100%);
+      color: white;
+    }
+    .info-box {
+      background: #fff1df;
+      border-left: 4px solid #ff7a00;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+      font-size: 0.9em;
+      line-height: 1.6;
+    }
+    .info-box strong {
+      color: #ff7a00;
+    }
+    .highlight-box {
+      background: linear-gradient(135deg, #ffe8cc 0%, #ffd4a6 100%);
+      border: 2px solid #ff7a00;
+      padding: 18px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 0.95em;
+      line-height: 1.6;
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.15);
+    }
+    .highlight-box strong {
+      color: #ff5500;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body id="page-sound">
+  <div class="container">
+    <h1>🔊 Enhanced Doppler Effect - Sound Simulator</h1>
+    <p class="subtitle">Experience DRAMATIC Doppler shifts with realistic vehicle sounds!</p>
+
+    <div class="highlight-box">
+
+<strong>🎯 ENHANCED FOR MAXIMUM EFFECT!</strong><br>
+      ✨ Longer track (200m) for extended Doppler experience<br>
+      🎵 More noticeable frequency shifts - you'll HEAR the difference!<br>
+      🏎️ NEW realistic sounds: F1 Car, Motorcycle, Train, Race Car, Helicopter<br>
+      📊 Real-time frequency shift percentage display
+    </div>
+
+    <div class="info-box">
+      <strong>How it works:</strong> This simulation uses <strong>radial velocity</strong> to calculate the real Doppler effect. 
+      When the source approaches the observer, you'll hear a higher pitch. As it passes and moves away, the pitch drops dramatically. 
+      The frequency changes smoothly based on the actual geometry and velocities!
+    </div>
+
+    <canvas id="soundCanvas"></canvas>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Emitted Frequency: <span class="value-display" id="emittedFreqVal">500</span> Hz</label>
+        <input type="range" id="emittedFreq" min="200" max="1200" value="500" step="10">
+      </div>
+
+      <div class="control-group">
+        <label>Wave Speed (c): <span class="value-display" id="waveSpeedVal">343</span> m/s</label>
+        <input type="range" id="waveSpeed" min="100" max="500" value="343" step="1">
+      </div>
+
+      <div class="control-group">
+        <label>Source Speed: <span class="value-display" id="sourceSpeedVal">40</span> m/s</label>
+        <input type="range" id="sourceSpeed" min="0" max="80" value="40" step="1">
+      </div>
+
+      <div class="control-group">
+        <label>Observer Speed: <span class="value-display" id="observerSpeedVal">0</span> m/s</label>
+        <input type="range" id="observerSpeed" min="-30" max="30" value="0" step="1">
+      </div>
+
+      <div class="control-group">
+        <label>Sound Type:</label>
+        <select id="soundType">
+          <option value="f1">🏎️ F1 Race Car (NEW!)</option>
+          <option value="racecar">🏁 Race Car (NEW!)</option>
+          <option value="motorcycle">🏍️ Motorcycle (NEW!)</option>
+          <option value="train">🚂 Train Horn (NEW!)</option>
+          <option value="helicopter">🚁 Helicopter (NEW!)</option>
+          <option value="jet">✈️ Jet Engine</option>
+          <option value="police">🚓 Police Siren</option>
+          <option value="ambulance">🚑 Ambulance Siren</option>
+          <option value="car">🚗 Car Horn</option>
+          <option value="osc">🎵 Pure Tone</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="startSim">▶ Start Simulation</button>
+      <button id="stopSim">⏸ Stop</button>
+      <button id="resetSim">↻ Reset</button>
+    </div>
+
+    <div class="info-box">
+      <strong>🎧 Recommended Settings for BEST Doppler Effect:</strong>
+      <ul style="margin-left: 20px; margin-top: 8px;">
+        <li><strong>F1 Car:</strong> Source speed 50-70 m/s, Frequency 500 Hz - EXTREME pitch shift!</li>
+        <li><strong>Race Car:</strong> Source speed 40-60 m/s, Frequency 600 Hz - Aggressive engine roar</li>
+        <li><strong>Motorcycle:</strong> Source speed 30-50 m/s, Frequency 400 Hz - Throaty rumble</li>
+        <li><strong>Train Horn:</strong> Source speed 25-40 m/s, Frequency 300 Hz - Deep classic horn</li>
+        <li><strong>Helicopter:</strong> Source speed 20-35 m/s, Frequency 400 Hz - Rhythmic chop</li>
+        <li><strong>Jet Engine:</strong> Source speed 50-80 m/s, Frequency 800 Hz - Powerful roar</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <strong>💡 Pro Tips:</strong>
+      <ul style="margin-left: 20px; margin-top: 8px;">
+        <li>Higher source speeds = MORE DRAMATIC Doppler effect</li>
+        <li>Watch the "Shift %" display - it shows how much the pitch changes!</li>
+        <li>Try moving the observer toward the source (positive speed) for even more effect</li>
+        <li>The longer track means you can hear the effect build up and fade away naturally</li>
+        <li>F1 and Race Car sounds have the most noticeable pitch changes!</li>
+      </ul>
+    </div>
+    
+    <div style="text-align: center;">
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
