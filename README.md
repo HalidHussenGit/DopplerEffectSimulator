@@ -1,4 +1,4 @@
-# **Doppler Effect Simulator(https://sit-group44-dopplereffectsimulator.netlify.app/)**  
+# **Doppler Effect Simulator**  
 
 **Doppler Effect Simulator** is an interactive physics project that demonstrates both the **sound and light Doppler effect**. It helps students and enthusiasts **visualize and understand how frequency and wavelength change** when sources move relative to an observer. This simulator offers a **realistic, hands-on experience** with generated audio and real-time visualizations.  
 
